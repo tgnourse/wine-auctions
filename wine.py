@@ -21,6 +21,7 @@ if not len(sys.argv) == 3:
 auctions = json.load(open(sys.argv[1]))
 sales = json.load(open(sys.argv[2]))
 
+biddable_auctions = []
 for auction in auctions:
     matched_sales = []
     # Get the list of matching sales.
@@ -35,29 +36,28 @@ for auction in auctions:
     if len(matched_sales) > 0:
         # Price per bottle at the current auction price.
         current_price_per_bottle = auction['current_bid'] / auction['quantity']
+        auction['current_price_per_bottle'] = current_price_per_bottle
 
         # Market price per bottle for each sale.
         sale_prices = [int(Decimal(re.sub(r'[^\d.]', '', sale['sold'])) * 100) for sale in matched_sales]
+        auction['sale_prices'] = sale_prices
         # print '\tSale prices: %s' % sale_prices
         max_sale_price_per_bottle = max(sale_prices)
+        auction['max_sale_price_per_bottle'] = max_sale_price_per_bottle
 
         # Break even bid is based on the maximum sale price.
         revenue_per_bottle = max_sale_price_per_bottle * (1 - SALE_COMMISSION)
+        auction['revenue_per_bottle'] = revenue_per_bottle
         profitable_price_per_bottle = revenue_per_bottle / (1 + TARGET_PROFIT)
+        auction['profitable_price_per_bottle'] = profitable_price_per_bottle
         max_bid_per_bottle = profitable_price_per_bottle / (1 + SALES_TAX_RATE)
+        auction['max_bid_per_bottle'] = max_bid_per_bottle
+        auction['max_bid'] = max_bid_per_bottle * auction['quantity']
 
         if max_bid_per_bottle > current_price_per_bottle:
-            print '%s bottles of [%s] matched %s sold bottles' % (auction['quantity'], auction['title'],
-                                                                  len(matched_sales))
-            print '\tMax sale price: %s' % format_cents(max_sale_price_per_bottle)
-            print '\tRevenue per bottle: %s' % format_cents(revenue_per_bottle)
-            print '\tProfitable price per bottle: %s' % format_cents(profitable_price_per_bottle)
-            print '\tCurrent bid: %s (%s per bottle)' % (format_cents(auction['current_bid']),
-                                                         format_cents(current_price_per_bottle))
-            print '\tMy bid: %s (%s per bottle)' % (format_cents(max_bid_per_bottle * auction['quantity']),
-                                                    format_cents(max_bid_per_bottle))
             min_profit = (revenue_per_bottle - profitable_price_per_bottle) * auction['quantity']
-            print '\tMin profit: %s' % format_cents(min_profit)
-            print '\thttp://www.kandl.com%s' % auction['link']
-        # else:
-        #     print '\tNot Profitable'
+            auction['min_profit'] = min_profit
+            # If there's a potential for sufficient profit, add this to the list of biddable auctions.
+            biddable_auctions.append(auction)
+
+print json.dumps(biddable_auctions, indent=4)
