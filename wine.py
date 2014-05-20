@@ -9,7 +9,7 @@ SALES_TAX_RATE = 0.09
 # The commission charged when selling the wine after the auction.
 SALE_COMMISSION = 0.15
 # The target profit for any wine purchased at auction.
-TARGET_PROFIT = 0.05
+TARGET_PROFIT = 0.1
 
 
 def format_cents(cents):
