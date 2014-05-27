@@ -12,3 +12,8 @@
 
 # OS generated files.
 *.DS_Store
+
+# Virtual env for this project.
+venv/
+
+staticfiles/
