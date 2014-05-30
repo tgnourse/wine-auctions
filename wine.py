@@ -57,6 +57,8 @@ for auction in auctions:
         if max_bid_per_bottle > current_price_per_bottle:
             min_profit = (revenue_per_bottle - profitable_price_per_bottle) * auction['quantity']
             auction['min_profit'] = min_profit
+            max_profit = (revenue_per_bottle - current_price_per_bottle * (1 + SALES_TAX_RATE)) * auction['quantity']
+            auction['max_profit'] = max_profit
             # If there's a potential for sufficient profit, add this to the list of biddable auctions.
             biddable_auctions.append(auction)
 
