@@ -26,4 +26,4 @@ with open(sys.argv[1], 'rb') as csvfile:
                 record[labels[column]] = value
             records.append(record)
 
-print json.dumps(records, indent=4)
+print json.dumps(records, indent=4, sort_keys=True)

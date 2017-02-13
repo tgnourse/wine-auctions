@@ -62,4 +62,4 @@ for auction in auctions:
             # If there's a potential for sufficient profit, add this to the list of biddable auctions.
             biddable_auctions.append(auction)
 
-print json.dumps(biddable_auctions, indent=4)
+print json.dumps(biddable_auctions, indent=4, sort_keys=True)
