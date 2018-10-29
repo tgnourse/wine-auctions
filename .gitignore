@@ -17,3 +17,6 @@
 venv/
 
 staticfiles/
+
+# Runtime information
+run/
