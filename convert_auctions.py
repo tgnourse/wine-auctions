@@ -126,10 +126,11 @@ class AuctionHTMLParser(HTMLParser):
     def json(self):
         return json.dumps(parser.records, indent=4, default=AuctionHTMLParser.date_handler, sort_keys=True)
 
+
 html = ''
 for line in sys.stdin:
     html += line
 
 parser = AuctionHTMLParser()
 parser.feed(html)
-print parser.json
+print(parser.json)
