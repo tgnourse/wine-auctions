@@ -15,6 +15,7 @@ TARGET_PROFIT = 0.1
 def format_cents(cents):
     return '$%.2f' % (float(cents) / 100)
 
+
 if not len(sys.argv) == 3:
     raise Exception('Usage: python wine.py auctions.json sales.json')
 
@@ -62,4 +63,4 @@ for auction in auctions:
             # If there's a potential for sufficient profit, add this to the list of biddable auctions.
             biddable_auctions.append(auction)
 
-print json.dumps(biddable_auctions, indent=4, sort_keys=True)
+print(json.dumps(biddable_auctions, indent=4, sort_keys=True))
