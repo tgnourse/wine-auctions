@@ -17,3 +17,6 @@
 venv/
 
 staticfiles/
+
+# Private data repo, cloned separately (tgnourse/wine-auctions-private).
+wine-auctions-private/
