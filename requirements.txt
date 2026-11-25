@@ -1,2 +1,2 @@
-python-dateutil==2.2
-python-slugify==0.0.7
+python-dateutil>=2.8
+python-slugify>=8.0

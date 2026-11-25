@@ -1,6 +1,6 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """Converts a list of auctions from HTML to JSON."""
-from HTMLParser import HTMLParser
+from html.parser import HTMLParser
 from decimal import Decimal
 import json
 import sys
@@ -31,9 +31,7 @@ class AuctionHTMLParser(HTMLParser):
     HREF_IMAGE = 'AuctionItemClick'
 
     def __init__(self):
-        # Can't call super() because this derives from an old style class.
-        # super(AuctionHTMLParser, self).__init__()
-        self.reset()
+        super().__init__()
         self.records = []
         self.current_record = None
         self.current_section = None
@@ -82,7 +80,7 @@ class AuctionHTMLParser(HTMLParser):
         if self.current_section == self.SECTION_DATE:
             match = re.search(r'End Date: ([\w\d: ]+)', data)
             if match:
-                self.current_record['end_date'] = parse(match.group(1))
+                self.current_record['end_date'] = parse(match.group(1), ignoretz=True)
 
         if self.current_section == self.SECTION_PRICE:
             self.current_record['current_bid'] = int(Decimal(re.sub(r'[^\d.]', '', data)) * 100)
@@ -130,12 +128,10 @@ class AuctionHTMLParser(HTMLParser):
 
     @property
     def json(self):
-        return json.dumps(parser.records, indent=4, default=AuctionHTMLParser.date_handler, sort_keys=True)
+        return json.dumps(self.records, indent=4, default=AuctionHTMLParser.date_handler, sort_keys=True)
 
 
-html = ''
-for line in sys.stdin:
-    html += line
+html = sys.stdin.read()
 
 parser = AuctionHTMLParser()
 parser.feed(html)

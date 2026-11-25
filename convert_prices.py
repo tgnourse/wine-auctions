@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 """Converts a Google Doc CSV into JSON."""
 import csv
 import json
@@ -9,7 +9,7 @@ if not len(sys.argv) == 2:
     raise Exception('Usage: python convert_prices.py prices.csv')
 
 records = []
-with open(sys.argv[1], 'rb') as csvfile:
+with open(sys.argv[1], newline='') as csvfile:
     reader = csv.reader(csvfile)
     labels = []
     for index, row in enumerate(reader):
@@ -26,4 +26,4 @@ with open(sys.argv[1], 'rb') as csvfile:
                 record[labels[column]] = value
             records.append(record)
 
-print json.dumps(records, indent=4, sort_keys=True)
+print(json.dumps(records, indent=4, sort_keys=True))
